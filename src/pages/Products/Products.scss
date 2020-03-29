@@ -1,0 +1,27 @@
+.products {
+    background: #eeeeee;
+    height: calc(100vh - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    .list {
+        background: #fff;
+        margin: 16px;
+        flex: 0 0 auto;
+
+        &__text {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .container {
+        height: 100%;
+        width: 100%;
+
+        .row {
+            cursor: pointer;
+        }
+    }
+}
