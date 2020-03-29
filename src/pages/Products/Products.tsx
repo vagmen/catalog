@@ -2,8 +2,8 @@ import React from "react";
 import "./Products.scss";
 import ProductsStore from "./ProductsStore";
 import { observer } from "mobx-react";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
-import { DeleteOutlined, AddOutlined } from "@material-ui/icons";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Fab, Tooltip } from "@material-ui/core";
+import { DeleteOutlined, Add } from "@material-ui/icons";
 import { IProduct } from "../../models/Product";
 import CircleButton from "../../components/CircleButton/CircleButton";
 
@@ -16,12 +16,11 @@ interface Column {
 }
 
 const columns: Column[] = [
-    { id: "name", label: "Название", minWidth: 170 },
-    { id: "category", label: "Категория", minWidth: 100 },
+    { id: "name", label: "Название" },
+    { id: "category", label: "Категория" },
     {
         id: "price",
         label: "Цена",
-        minWidth: 170,
     },
     {
         id: "expirationDate",
@@ -42,8 +41,12 @@ const Products = observer(() => {
                                     {column.label}
                                 </TableCell>
                             ))}
-                            <TableCell align="right">
-                                <CircleButton title="Добавить товар" icon={AddOutlined} color="primary" />
+                            <TableCell align="right" style={{ width: 50 }}>
+                                <Tooltip title="Добавить товар">
+                                    <Fab color="primary" size="medium">
+                                        <Add />
+                                    </Fab>
+                                </Tooltip>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -68,26 +71,6 @@ const Products = observer(() => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* <List className="list">
-                {productsStore.list.map((product) => (
-                    <ListItem key={product.id} button>
-                        <ListItemText
-                            primary={
-                                <div className="list__text">
-                                    <span>{product.name}</span>
-                                    <span>{product.price} &#8381;</span>
-                                </div>
-                            }
-                            secondary={product.expirationDate.format("LL")}
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="delete" color="secondary">
-                                <DeleteOutlined />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                ))}
-            </List> */}
         </div>
     );
 });

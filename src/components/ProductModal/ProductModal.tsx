@@ -1,9 +1,9 @@
 import React from "react";
-import { Tab, Tabs, Dialog, DialogTitle } from "@material-ui/core";
+import { Dialog, DialogTitle } from "@material-ui/core";
 import { observer } from "mobx-react";
 import "./ProductModal.scss";
 
-const ProductModal = observer(() => {
+const ProductModal = observer((props: { visible: boolean; onClose: () => void }) => {
     // const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     //     // setValue(newValue);
     //     navBarStore.setTab(newValue);
@@ -11,7 +11,7 @@ const ProductModal = observer(() => {
     // };
 
     return (
-        <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+        <Dialog onClose={props.onClose} aria-labelledby="simple-dialog-title" open={props.visible}>
             <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
         </Dialog>
     );

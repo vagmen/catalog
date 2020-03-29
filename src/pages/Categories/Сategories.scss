@@ -1,0 +1,21 @@
+.categories {
+  background: #eeeeee;
+  height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: auto;
+  position: relative;
+
+  .list {
+    background: #fff;
+    margin: 16px;
+    flex: 0 0 auto;
+  }
+
+  .addButton {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+  }
+}
