@@ -4,30 +4,38 @@ import { observer } from "mobx-react";
 import "./CategoryModal.scss";
 import Category from "../../models/Category";
 
-const CategoryModal = observer((props: { visible: boolean; onClose: () => void; category: Category | null }) => {
-    // const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    //     // setValue(newValue);
-    //     navBarStore.setTab(newValue);
-    //     event.preventDefault();
-    // };
+interface ICategoryModal {
+    visible: boolean;
+    onClose: () => void;
+    category: Category | null;
+    onSave: () => void;
+}
+
+const CategoryModal = observer((props: ICategoryModal) => {
+    const { visible, onClose, category, onSave } = props;
+
+    const nameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (category) category.name = event.target.value;
+    };
 
     return (
-        <Dialog onClose={props.onClose} aria-labelledby="simple-dialog-title" open={props.visible}>
+        <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" open={visible}>
             <DialogTitle id="simple-dialog-title">
-                {props.category?.id ? "Редактирование категории" : "Новая категория"}
+                {category?.id ? "Редактирование категории" : "Новая категория"}
             </DialogTitle>
             <DialogContent>
                 <TextField
                     error
                     label="Название"
-                    value={props.category?.name}
+                    value={category?.name}
                     helperText="Incorrect entry."
                     variant="outlined"
                     fullWidth
+                    onChange={nameChangeHandler}
                 />
             </DialogContent>
             <DialogActions>
-                <Button fullWidth onClick={() => {}} color="primary" variant="contained">
+                <Button fullWidth onClick={onSave} color="primary" variant="contained">
                     Сохранить
                 </Button>
             </DialogActions>

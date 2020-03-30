@@ -34,7 +34,18 @@ export class CategoriesStore {
     };
 
     selectCategory = (category: Category | null) => {
-        this.selectedCategory = category;
+        this.selectedCategory = category ? { ...category } : null;
+    };
+
+    saveCategory = () => {
+        console.log("this.selectedCategory", this.selectedCategory?.id);
+
+        if (this.selectedCategory?.id) {
+            // apiCreateCategory("");
+            console.log('apiCreateCategory("")', this.selectedCategory.name);
+        } else {
+            console.log('apiUpdateCategory("")', this.selectedCategory);
+        }
     };
 }
 
@@ -43,4 +54,5 @@ export default decorate(new CategoriesStore(), {
     fetchProducts: action,
     selectedCategory: observable,
     selectCategory: action,
+    saveCategory: action,
 });

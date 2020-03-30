@@ -11,6 +11,7 @@ import Category from "../../models/Category";
 
 const Сategories = observer(() => {
     const categoriesStore = CategoriesStore;
+    const { saveCategory } = CategoriesStore;
 
     return (
         <div className="categories">
@@ -32,6 +33,7 @@ const Сategories = observer(() => {
                 visible={!!categoriesStore.selectedCategory}
                 onClose={() => categoriesStore.selectCategory(null)}
                 category={categoriesStore.selectedCategory}
+                onSave={saveCategory}
             />
             <div className="addButton">
                 <Tooltip title="Добавить категорию">
