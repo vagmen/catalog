@@ -64,7 +64,12 @@ const Products = observer(() => {
                                 <TableCell>{row.price} &#8381;</TableCell>
                                 <TableCell>{row.expirationDate.format("LL")}</TableCell>
                                 <TableCell align="right">
-                                    <CircleButton title="Удалить товар" icon={DeleteOutlined} color="secondary" />
+                                    <CircleButton
+                                        title="Удалить товар"
+                                        icon={DeleteOutlined}
+                                        color="secondary"
+                                        onClick={() => {}}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -5,7 +5,7 @@ import Сategories from "./pages/Categories/Сategories";
 import Products from "./pages/Products/Products";
 import { AppBar, Typography, Toolbar, StylesProvider } from "@material-ui/core";
 import NavBar from "./components/NavBar/NavBar";
-import { history } from "./utils";
+import { history } from "./utils/router";
 
 function App() {
     return (

@@ -10,37 +10,39 @@ import { v4 as uuid } from "uuid";
 import Category from "../../models/Category";
 
 const Сategories = observer(() => {
-    const categoriesStore = CategoriesStore;
-    const { saveCategory } = CategoriesStore;
+    const { saveCategory, deleteCategory, categoryModalStore, list } = CategoriesStore;
+    const { selectedCategory, selectCategory } = categoryModalStore;
 
     return (
         <div className="categories">
             <List className="list">
-                {categoriesStore.list.map((category) => (
-                    <ListItem
-                        key={category.id || uuid()}
-                        button
-                        onClick={() => categoriesStore.selectCategory(category)}
-                    >
+                {list.map((category) => (
+                    <ListItem key={category.id || uuid()} button onClick={() => selectCategory(category)}>
                         <ListItemText primary={<span>{category.name}</span>} />
                         <ListItemSecondaryAction>
-                            <CircleButton title="Удалить товар" icon={DeleteOutlined} color="secondary" edge="end" />
+                            <CircleButton
+                                title="Удалить категорию"
+                                icon={DeleteOutlined}
+                                color="secondary"
+                                edge="end"
+                                onClick={() => (category.id ? deleteCategory(category.id) : () => {})}
+                            />
                         </ListItemSecondaryAction>
                     </ListItem>
                 ))}
             </List>
             <CategoryModal
-                visible={!!categoriesStore.selectedCategory}
-                onClose={() => categoriesStore.selectCategory(null)}
-                category={categoriesStore.selectedCategory}
+                visible={!!selectedCategory}
+                onClose={() => selectCategory(null)}
                 onSave={saveCategory}
+                categoryModalStore={categoryModalStore}
             />
             <div className="addButton">
                 <Tooltip title="Добавить категорию">
                     <Fab
                         color="primary"
                         size="medium"
-                        onClick={() => categoriesStore.selectCategory(new Category({ id: null, name: "" }))}
+                        onClick={() => selectCategory(new Category({ id: null, name: "" }))}
                     >
                         <Add />
                     </Fab>

@@ -1,5 +1,5 @@
 import { observable, decorate, action } from "mobx";
-import { history } from "../../utils";
+import { history } from "../../utils/router";
 
 export class NavBarStore {
     currentTab = "/";

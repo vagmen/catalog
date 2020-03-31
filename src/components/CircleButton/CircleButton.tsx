@@ -3,24 +3,25 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import { observer } from "mobx-react";
 import "./CircleButton.scss";
 
-const CircleButton = observer(
-    (props: {
-        icon: any;
-        title: string;
-        color?: "inherit" | "primary" | "secondary" | "default" | undefined;
-        className?: string;
-        edge?: false | "start" | "end" | undefined;
-    }) => {
-        const Icon = props.icon;
+interface ICircleButton {
+    icon: any;
+    title: string;
+    color?: "inherit" | "primary" | "secondary" | "default" | undefined;
+    className?: string;
+    edge?: false | "start" | "end" | undefined;
+    onClick: () => void;
+}
 
-        return (
-            <Tooltip title={props.title}>
-                <IconButton aria-label="delete" color={props.color} className={props.className} edge={props.edge}>
-                    <Icon />
-                </IconButton>
-            </Tooltip>
-        );
-    }
-);
+const CircleButton = observer(({ onClick, title, color, className, edge, icon }: ICircleButton) => {
+    const Icon = icon;
+
+    return (
+        <Tooltip title={title}>
+            <IconButton aria-label="delete" color={color} className={className} edge={edge} onClick={onClick}>
+                <Icon />
+            </IconButton>
+        </Tooltip>
+    );
+});
 
 export default CircleButton;
