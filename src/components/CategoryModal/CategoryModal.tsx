@@ -42,6 +42,7 @@ const CategoryModal = observer((props: ICategoryModal) => {
                     color="primary"
                     variant="contained"
                     disabled={errors.length > 0 && isValidated}
+                    size="large"
                 >
                     Сохранить
                 </Button>

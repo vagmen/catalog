@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
 import { observer } from "mobx-react";
 import "./CircleButton.scss";
@@ -9,7 +9,7 @@ interface ICircleButton {
     color?: "inherit" | "primary" | "secondary" | "default" | undefined;
     className?: string;
     edge?: false | "start" | "end" | undefined;
-    onClick: () => void;
+    onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const CircleButton = observer(({ onClick, title, color, className, edge, icon }: ICircleButton) => {

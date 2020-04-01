@@ -1,11 +1,5 @@
-.tabs {
-    height: 64px;
-
-    div {
-        height: 100%;
-    }
-
-    .tab {
-        height: 100%;
-    }
+.inputs {
+    display: grid;
+    padding: 16px;
+    row-gap: 16px;
 }

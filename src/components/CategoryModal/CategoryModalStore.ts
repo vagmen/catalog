@@ -13,10 +13,8 @@ export class CategoryModalStore {
 
     @computed
     get errors() {
-        console.log("allCategories", this.allCategories.length);
-
         const err: string[] = [];
-        if (this.selectedCategory?.name && this.selectedCategory?.name?.length < 4) {
+        if (this.selectedCategory?.name && this.selectedCategory?.name?.length < 5) {
             err.push("Слишком короткое название");
         }
         if (this.selectedCategory?.name && this.selectedCategory?.name?.length > 30) {

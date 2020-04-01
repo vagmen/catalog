@@ -1,11 +1,13 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import "./Products.scss";
 import ProductsStore from "./ProductsStore";
 import { observer } from "mobx-react";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Fab, Tooltip } from "@material-ui/core";
 import { DeleteOutlined, Add } from "@material-ui/icons";
-import { IProduct } from "../../models/Product";
+import Product, { IProduct } from "../../models/Product";
 import CircleButton from "../../components/CircleButton/CircleButton";
+import ProductModal from "../../components/ProductModal/ProductModal";
+import { v4 as uuid } from "uuid";
 
 interface Column {
     id: keyof IProduct | "action";
@@ -29,7 +31,9 @@ const columns: Column[] = [
 ];
 
 const Products = observer(() => {
-    const productsStore = ProductsStore;
+    const { saveProduct, deleteProduct, productModalStore, list } = ProductsStore;
+    const { selectedProduct, selectProduct } = productModalStore;
+
     return (
         <div className="products">
             <TableContainer className="container">
@@ -43,7 +47,11 @@ const Products = observer(() => {
                             ))}
                             <TableCell align="right" style={{ width: 50 }}>
                                 <Tooltip title="Добавить товар">
-                                    <Fab color="primary" size="medium">
+                                    <Fab
+                                        color="primary"
+                                        size="medium"
+                                        onClick={() => selectProduct(new Product({ name: "" }))}
+                                    >
                                         <Add />
                                     </Fab>
                                 </Tooltip>
@@ -51,24 +59,28 @@ const Products = observer(() => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {productsStore.list.map((row) => (
+                        {list.map((row) => (
                             <TableRow
                                 hover
                                 tabIndex={-1}
-                                key={row.id}
-                                onClick={() => console.log("sdf")}
+                                key={row.id || uuid()}
+                                onClick={() => selectProduct(row)}
                                 className="row"
                             >
                                 <TableCell>{row.name}</TableCell>
                                 <TableCell>{row.category}</TableCell>
                                 <TableCell>{row.price} &#8381;</TableCell>
-                                <TableCell>{row.expirationDate.format("LL")}</TableCell>
+                                <TableCell>{row.expirationDate ? row.expirationDate.format("LL") : ""}</TableCell>
                                 <TableCell align="right">
                                     <CircleButton
                                         title="Удалить товар"
                                         icon={DeleteOutlined}
                                         color="secondary"
-                                        onClick={() => {}}
+                                        onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                                            event.stopPropagation();
+                                            event.preventDefault();
+                                            deleteProduct(row.id);
+                                        }}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -76,6 +88,12 @@ const Products = observer(() => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ProductModal
+                visible={!!selectedProduct}
+                onClose={() => selectProduct(null)}
+                onSave={saveProduct}
+                productModalStore={productModalStore}
+            />
         </div>
     );
 });

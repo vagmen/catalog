@@ -2,25 +2,25 @@ import { observable } from "mobx";
 import { Moment } from "moment";
 
 export interface IProduct {
-    id: string;
+    id?: string | null;
     name: string;
-    price: number;
-    expirationDate: Moment;
-    category: string;
+    price?: number | null;
+    expirationDate?: Moment | null;
+    category?: string | null;
 }
 
 export default class Product {
-    @observable id: string;
+    @observable id: string | null;
     @observable name: string;
-    @observable price: number;
-    @observable expirationDate: Moment;
-    @observable category: string;
+    @observable price: number | null;
+    @observable expirationDate: Moment | null;
+    @observable category: string | null;
 
     constructor(props: IProduct) {
-        this.id = props.id;
+        this.id = props.id || null;
         this.name = props.name;
-        this.price = props.price;
-        this.expirationDate = props.expirationDate;
-        this.category = props.category;
+        this.price = props.price || null;
+        this.expirationDate = props.expirationDate || null;
+        this.category = props.category || null;
     }
 }
