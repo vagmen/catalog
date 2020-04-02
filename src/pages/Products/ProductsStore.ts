@@ -1,28 +1,9 @@
 import { observable, decorate, action } from "mobx";
-import Product from "../../models/Product";
-import { v4 as uuid } from "uuid";
-import moment from "moment";
+import Product, { IProduct } from "../../models/Product";
 import "moment/locale/ru";
 import { ProductModalStore } from "../../components/ProductModal/ProductModalStore";
 import api from "../../utils/api";
 import { getArray } from "../../utils/localStorage";
-
-const data = [
-    { id: uuid(), name: "Продукт1", price: 123, expirationDate: moment().add(1, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт2", price: 123, expirationDate: moment().add(2, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-    { id: uuid(), name: "Продукт3", price: 123, expirationDate: moment().add(3, "day"), category: "Категория" },
-];
 
 export class ProductsStore {
     list: Product[] = [];
@@ -33,24 +14,27 @@ export class ProductsStore {
     }
 
     fetchProducts = () => {
-        // const list = data.map((item) => new Product(item));
-        // this.list = list;
-
         this.list = [];
-        const products: Product[] = getArray("products");
+        const products: IProduct[] = getArray("products");
         const list = products.map((item) => new Product(item));
         this.list = list;
     };
 
     saveProduct = () => {
-        const { selectedProduct, selectProduct, errors } = this.productModalStore;
+        const { selectedProduct, selectProduct, hasError } = this.productModalStore;
         this.productModalStore.isValidated = true;
-        if (selectedProduct && errors.length === 0) {
+        if (selectedProduct && !hasError) {
             if (selectedProduct?.id) {
                 api.product.update(selectedProduct);
                 this.fetchProducts();
             } else {
-                api.product.create(selectedProduct.name);
+                const { name, price, expirationDate, category } = selectedProduct;
+                api.product.create({
+                    name,
+                    price: price || "1",
+                    expirationDate: expirationDate.format(),
+                    category: category || "",
+                });
                 this.fetchProducts();
             }
             selectProduct(null);

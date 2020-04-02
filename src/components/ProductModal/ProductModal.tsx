@@ -1,8 +1,11 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@material-ui/core";
+import { Dialog, DialogTitle, TextField, DialogActions, Button } from "@material-ui/core";
 import { observer } from "mobx-react";
 import "./ProductModal.scss";
 import { ProductModalStore } from "./ProductModalStore";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import moment, { Moment } from "moment";
+import MomentUtils from "@date-io/moment";
 
 interface IProductModal {
     visible: boolean;
@@ -13,20 +16,18 @@ interface IProductModal {
 
 const ProductModal = observer((props: IProductModal) => {
     const { visible, onClose, productModalStore, onSave } = props;
-    const { errors, errorText, isValidated, selectedProduct } = productModalStore;
+    const { errors, isValidated, selectedProduct, hasError } = productModalStore;
 
     const nameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (selectedProduct) selectedProduct.name = event.target.value;
     };
 
     const priceChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("selectedProduct", selectedProduct);
-
-        if (selectedProduct) selectedProduct.price = (event.target.value as unknown) as number;
+        if (selectedProduct) selectedProduct.price = event.target.value;
     };
 
-    const dateChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // if (selectedProduct) selectedProduct.expirationDate = event.target.value;
+    const dateChangeHandler = (date: Moment | null) => {
+        if (selectedProduct) selectedProduct.expirationDate = date || moment().add(1, "day");
     };
 
     const categoryChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,37 +41,51 @@ const ProductModal = observer((props: IProductModal) => {
             </DialogTitle>
             <div className="inputs">
                 <TextField
-                    error={isValidated && errors.length > 0}
+                    error={isValidated && errors.name.length > 0}
                     label="Название"
                     value={selectedProduct?.name}
-                    helperText={errorText}
+                    helperText={isValidated ? errors.name[0] : ""}
                     variant="outlined"
                     fullWidth
                     onChange={nameChangeHandler}
                 />
                 <TextField
-                    error={isValidated && errors.length > 0}
+                    error={isValidated && errors.price.length > 0}
                     label="Цена"
                     value={selectedProduct?.price || ""}
-                    helperText={errorText}
+                    helperText={isValidated ? errors.price[0] : ""}
                     variant="outlined"
                     fullWidth
                     onChange={priceChangeHandler}
                 />
-                <TextField
-                    error={isValidated && errors.length > 0}
+                {/* <TextField
+                    error={isValidated && errors.expirationDate.length > 0}
                     label="Срок годности"
                     value={selectedProduct?.expirationDate || ""}
-                    helperText={errorText}
+                    helperText={isValidated ? errors.expirationDate[0] : ""}
                     variant="outlined"
                     fullWidth
                     onChange={dateChangeHandler}
-                />
+                /> */}
+                <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils} locale="ru">
+                    <DatePicker
+                        value={selectedProduct?.expirationDate || moment()}
+                        onChange={(date) => dateChangeHandler(date)}
+                        helperText={isValidated ? errors.expirationDate[0] : ""}
+                        label="Срок годности"
+                        inputVariant="outlined"
+                        format="DD.MM.YYYY"
+                        placeholder="Срок годности"
+                        minDate={moment().add(1, "day")}
+                        fullWidth
+                        error={isValidated && errors.expirationDate.length > 0}
+                    />
+                </MuiPickersUtilsProvider>
                 <TextField
-                    error={isValidated && errors.length > 0}
+                    error={isValidated && errors.category.length > 0}
                     label="Категория"
                     value={selectedProduct?.category || ""}
-                    helperText={errorText}
+                    helperText={isValidated ? errors.category[0] : ""}
                     variant="outlined"
                     fullWidth
                     onChange={categoryChangeHandler}
@@ -82,7 +97,7 @@ const ProductModal = observer((props: IProductModal) => {
                     onClick={onSave}
                     color="primary"
                     variant="contained"
-                    disabled={errors.length > 0 && isValidated}
+                    disabled={hasError && isValidated}
                     size="large"
                 >
                     Сохранить

@@ -28,10 +28,20 @@ const api = {
         },
     },
     product: {
-        create: (name: string) => {
+        create: ({
+            name,
+            price,
+            expirationDate,
+            category,
+        }: {
+            name: string;
+            price: string;
+            expirationDate: string;
+            category: string;
+        }) => {
             const id = uuid();
             const products = getArray("products");
-            products.push(new Category({ id, name }));
+            products.push(new Product({ id, name, price, expirationDate, category }));
             setObject("products", products);
         },
         update: (product: Product) => {
@@ -39,6 +49,9 @@ const api = {
             const currentProduct = products.find((item) => item.id === product.id);
             if (currentProduct) {
                 currentProduct.name = product.name;
+                currentProduct.price = product.price;
+                currentProduct.expirationDate = product.expirationDate;
+                currentProduct.category = product.category;
             } else {
                 products.push(product);
             }
