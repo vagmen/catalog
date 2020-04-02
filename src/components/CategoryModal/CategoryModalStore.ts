@@ -14,17 +14,23 @@ export class CategoryModalStore {
     @computed
     get errors() {
         const err: string[] = [];
-        if (this.selectedCategory?.name && this.selectedCategory?.name?.length < 5) {
-            err.push("Слишком короткое название");
-        }
-        if (this.selectedCategory?.name && this.selectedCategory?.name?.length > 30) {
-            err.push("Слишком длинное название");
-        }
-        const isCategoryExist = this.allCategories
-            .filter((item) => item.id !== this.selectedCategory?.id)
-            .find((item) => item.name === this.selectedCategory?.name);
-        if (isCategoryExist) {
-            err.push("Категория с таким названием уже существует");
+        if (this.selectedCategory) {
+            const { id, name } = this.selectedCategory;
+            if (name.length === 0) {
+                err.push("Введите название, пожалуйста");
+            }
+            if (name.length < 5) {
+                err.push("Слишком короткое название");
+            }
+            if (name.length > 40) {
+                err.push("Слишком длинное название");
+            }
+            const isCategoryExist = this.allCategories
+                .filter((item) => item.id !== id)
+                .find((item) => item.name === name);
+            if (isCategoryExist) {
+                err.push("Категория с таким названием уже существует");
+            }
         }
         return err;
     }

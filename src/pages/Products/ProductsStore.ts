@@ -9,10 +9,6 @@ export class ProductsStore {
     list: Product[] = [];
     productModalStore = new ProductModalStore();
 
-    constructor() {
-        this.fetchProducts();
-    }
-
     fetchProducts = () => {
         this.list = [];
         const products: IProduct[] = getArray("products");
@@ -26,7 +22,6 @@ export class ProductsStore {
         if (selectedProduct && !hasError) {
             if (selectedProduct?.id) {
                 api.product.update(selectedProduct);
-                this.fetchProducts();
             } else {
                 const { name, price, expirationDate, category } = selectedProduct;
                 api.product.create({
@@ -35,7 +30,6 @@ export class ProductsStore {
                     expirationDate: expirationDate.format(),
                     category: category || "",
                 });
-                this.fetchProducts();
             }
             selectProduct(null);
         }

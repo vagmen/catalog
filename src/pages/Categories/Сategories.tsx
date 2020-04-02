@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Сategories.scss";
 import CategoriesStore from "./СategoriesStore";
 import { List, ListItem, ListItemText, ListItemSecondaryAction, Tooltip, Fab } from "@material-ui/core";
@@ -10,8 +10,10 @@ import { v4 as uuid } from "uuid";
 import Category from "../../models/Category";
 
 const Сategories = observer(() => {
-    const { saveCategory, deleteCategory, categoryModalStore, list } = CategoriesStore;
+    const { saveCategory, deleteCategory, categoryModalStore, list, fetchCategories } = CategoriesStore;
     const { selectedCategory, selectCategory } = categoryModalStore;
+
+    useEffect(() => fetchCategories(), [fetchCategories, selectedCategory]);
 
     return (
         <div className="categories">

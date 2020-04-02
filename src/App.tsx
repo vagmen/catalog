@@ -6,10 +6,12 @@ import Products from "./pages/Products/Products";
 import { AppBar, Typography, Toolbar, StylesProvider } from "@material-ui/core";
 import NavBar from "./components/NavBar/NavBar";
 import { history } from "./utils/router";
+import { Provider } from "mobx-react";
+import CategoriesStore from "./pages/Categories/СategoriesStore";
 
 function App() {
     return (
-        <div className="App">
+        <Provider categoriesStore={CategoriesStore}>
             <StylesProvider injectFirst={true}>
                 <Router history={history}>
                     <AppBar position="static" className="header">
@@ -30,7 +32,7 @@ function App() {
                     </div>
                 </Router>
             </StylesProvider>
-        </div>
+        </Provider>
     );
 }
 

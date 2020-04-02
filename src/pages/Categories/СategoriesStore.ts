@@ -9,7 +9,6 @@ export class CategoriesStore {
     categoryModalStore = new CategoryModalStore();
 
     constructor() {
-        this.fetchCategories();
         autorun(() => {
             this.categoryModalStore.allCategories = this.list;
         });
@@ -29,10 +28,8 @@ export class CategoriesStore {
         if (selectedCategory && errors.length === 0) {
             if (selectedCategory?.id) {
                 api.category.update(selectedCategory);
-                this.fetchCategories();
             } else {
                 api.category.create(selectedCategory.name);
-                this.fetchCategories();
             }
             selectCategory(null);
         }

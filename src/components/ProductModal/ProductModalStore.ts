@@ -44,6 +44,10 @@ export class ProductModalStore {
             if (expirationDate < moment()) {
                 err.price.push("Дата должна быть больше чем сегодня");
             }
+
+            if (category === null) {
+                err.category.push("Выберите категорию");
+            }
         }
         return err;
     }
