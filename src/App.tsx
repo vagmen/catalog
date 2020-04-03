@@ -10,6 +10,7 @@ import { Provider, observer } from "mobx-react";
 import CategoriesStore from "./pages/Categories/СategoriesStore";
 import AppStore from "./AppStore";
 import LoginForm from "./components/LoginForm/LoginForm";
+import NotFound from "./components/NotFound/NotFound";
 
 const App = observer(() => {
     const { isLogined, logIn, logOut } = AppStore;
@@ -27,11 +28,14 @@ const App = observer(() => {
                         </AppBar>
                         <div>
                             <Switch>
-                                <Route path="/categories">
+                                <Route path="/" exact>
+                                    <Products />
+                                </Route>
+                                <Route path="/categories" exact>
                                     <Сategories />
                                 </Route>
-                                <Route path="/">
-                                    <Products />
+                                <Route>
+                                    <NotFound />
                                 </Route>
                             </Switch>
                         </div>

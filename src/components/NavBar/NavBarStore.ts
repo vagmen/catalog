@@ -6,7 +6,6 @@ export class NavBarStore {
 
     setTab = (newValue: string) => {
         history.push(newValue);
-
         this.currentTab = newValue;
     };
 }
