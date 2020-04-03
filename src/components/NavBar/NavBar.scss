@@ -1,11 +1,19 @@
-.tabs {
-    height: 64px;
+.nav {
+    display: flex;
 
-    div {
-        height: 100%;
+    .tabs {
+        height: 64px;
+
+        div {
+            height: 100%;
+        }
+
+        .tab {
+            height: 100%;
+        }
     }
 
-    .tab {
-        height: 100%;
+    .logout {
+        color: #fff;
     }
 }

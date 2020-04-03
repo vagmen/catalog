@@ -1,5 +1,21 @@
-import { decorate } from "mobx";
+import { decorate, observable, action } from "mobx";
 
-export class AppStore {}
+export class AppStore {
+    isLogined = localStorage.getItem("isLogined") === "true";
 
-export default decorate(new AppStore(), {});
+    logIn = () => {
+        this.isLogined = true;
+        localStorage.setItem("isLogined", "true");
+    };
+
+    logOut = () => {
+        this.isLogined = false;
+        localStorage.setItem("isLogined", "false");
+    };
+}
+
+export default decorate(new AppStore(), {
+    isLogined: observable,
+    logIn: action,
+    logOut: action,
+});
